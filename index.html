@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>سجل الطلبات</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0b1d4d;
+      color: white;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #ffd700;
+    }
+
+    .clear-btn {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .clear-btn button {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .orders-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .order-card {
+      background-color: #1a2f5e;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .order-card:hover {
+      transform: scale(1.03);
+    }
+
+    .order-card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .order-card .desc {
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+
+    .order-card .price {
+      color: #ffd700;
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .order-card .number {
+      color: white;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h2><i class="fas fa-list"></i> سجل الطلبات</h2>
+
+  <div class="clear-btn">
+    <button onclick="clearOrders()">مسح كل الطلبات</button>
+  </div>
+
+  <div class="orders-container" id="ordersList"></div>
+
+  <script>
+    const ordersList = document.getElementById("ordersList");
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    if (orders.length === 0) {
+      ordersList.innerHTML = "<p style='text-align:center;'>لا يوجد طلبات حتى الآن.</p>";
+    } else {
+      orders.forEach(order => {
+        const card = document.createElement("div");
+        card.className = "order-card";
+        card.innerHTML = `
+          <h3>${order.name}</h3>
+          <div class="desc">${order.desc}</div>
+          <div class="price">السعر: ${order.price}</div>
+          <div class="number">رقم التواصل: ${order.number}</div>
+        `;
+        ordersList.appendChild(card);
+      });
+    }
+
+    function clearOrders() {
+      if (confirm("هل أنت متأكد أنك تريد مسح كل الطلبات؟")) {
+        localStorage.removeItem("orders");
+        location.reload();
+      }
+    }
+  </script>
+</body>
+</html>
